@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>SelectMenu</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0'/>
+
+    <link rel="stylesheet" href="https://absol.cf/hightlight/styles/default.css">
+    <link rel="stylesheet" href="https://pictogrammers.github.io/@mdi/font/5.3.45/css/materialdesignicons.min.css" media="all" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <script src="https://absol.cf/hightlight/highlight.pack.js"></script>
+    <script src="../dist/absol-mobile.js?ctime=<?php  echo stat('../dist/absol-mobile.js')['mtime'];?>"></script>
+    <script>
+        var $ = absol.$;
+        var _ = absol._;
+    </script>
+    <style>
+
+    </style>
+</head>
+
+<body>
+<div class="demo">
+
+</div>
+<script>
+    function genItems(n, withDesc, withIcon) {
+        return Array(n).fill(null).map(function (u, i) {
+            return {
+                icon: withIcon? 'span.mdi.mdi-account': null,
+                text: '[' + i + ']' + absol.string.randomPhrase(0),
+                value: i,
+                desc: withDesc ? absol.string.randomPhrase(30) : null
+            }
+        });
+    }
+
+    var demoDiv = $('.demo');
+
+    var demoData = [
+        {
+            items: genItems(6000, true),
+            value: 1,
+            enableSearch: true,
+            exampleDesc: "Rất rất nhiều item(6000), có chú thích, có tìm kiếm"
+        },
+        {
+            items: genItems(6000, true, true),
+            value: 1,
+            enableSearch: true,
+            exampleDesc: "Rất rất nhiều item(6000), có chú thích, có tìm kiếm, icon"
+        },
+        {
+            items: genItems(1000, false),
+            value: 1,
+            enableSearch: true,
+            exampleDesc: "Rất nhiều item(1000), có tìm kiếm"
+        },
+        {
+            items: genItems(1000, false),
+            value: 100,
+            enableSearch: true,
+            exampleDesc: "Rất nhiều item(1000)"
+        },
+        {
+            items: genItems(30, false),
+            value: 20,
+            enableSearch: false,
+            exampleDesc: "Không nhiều item(30), không search"
+        },
+        {
+            items: [
+                { text: "Nam", value: 1 },
+                { text: "Nữ", value: 0 },
+                { text: "Bí mật", value: 2 }
+            ],
+            value: 1,
+            enableSearch: false,
+            exampleDesc: "Ít item"
+        }
+    ]
+
+    demoData.forEach(
+        function (data) {
+            var desc = _({
+                tag: 'h3',
+                child: { text: data.exampleDesc }
+            }).addTo(demoDiv);
+            var now = new Date().getTime();
+            /***
+             * @type {MSelectMenu}
+             */
+            var sm = _({
+                tag: 'mselectmenu',
+                style: {
+                    width: 'auto'
+                },
+                props: {
+                    items: data.items,
+                    value: data.value,
+                    enableSearch: data.enableSearch
+                },
+                on: {
+                    change: function () {
+                        valueText.firstChild.data = 'value = ' + this.value
+                    }
+                }
+            }).addTo(demoDiv);
+            var w = sm.getRecommendWith();
+            sm.addStyle({
+                width: w + 'px',
+                maxWidth: '90vw'
+            });
+            var renderTime = new Date().getTime() - now;
+
+            var valueText = _({
+                child: { text: 'value = ' + data.value }
+            }).addTo(demoDiv);
+            var renderTimeText = _({
+                child: { text: 'render: ' + renderTime + "(ms)" }
+            }).addTo(demoDiv);
+        }
+    )
+
+
+</script>
+
+</body>
+
+</html>
